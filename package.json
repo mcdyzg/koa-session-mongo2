@@ -1,0 +1,19 @@
+{
+  "name": "koa-session-mongoDB",
+  "version": "1.0.0",
+  "description": "MongoDB store for koa-session middleware",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "author": "mcdyzh",
+  "license": "MIT",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/mcdyzg/koa-session-mongoDB.git"
+  }
+}
