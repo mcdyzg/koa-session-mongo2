@@ -1,5 +1,5 @@
 {
-  "name": "koa-session-mongoDB",
+  "name": "koa-session-mongo2",
   "version": "0.0.1",
   "description": "MongoDB store for koa-session middleware",
   "main": "index.js",
