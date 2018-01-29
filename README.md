@@ -1,9 +1,9 @@
-# koa-session-mongoDB
+# koa-session-mongo2
 
 ## Usage
 
 ```
-npm install koa-session2-mongo
+npm install koa-session-mongo2
 ```
 
 ## Usage
@@ -11,7 +11,7 @@ npm install koa-session2-mongo
 ```
 var koa = require('koa');
 var session = require('koa-session');
-const MongoStore = require("koa-session-mongoDB");
+const MongoStore = require("koa-session-mongo2");
 
 var app = koa();
 app.use(session({
