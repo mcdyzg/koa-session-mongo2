@@ -7,14 +7,16 @@ class MongoStore{
         this.init(opts);
     }
 
-    async init({url, options, collection = "__session"}) {
+    async init({url, options, collection = "__session",maxAge = 10 * 24 * 3600}) {
         try {
-            this.db = await mongod.MongoClient.connect(url, options);
-            this.coll = await this.db.collection(collection);
-            // let exist = await this.coll.indexExists(["access__idx"]);
-            // if (!exist) {
-            //     this.coll.createIndex({"lastAccess": 1}, {name: "access__idx", expireAfterSeconds: maxAge});
-            // }
+            this.client = await mongod.MongoClient.connect(url);
+            this.db = await this.client.db('fenxiao_user');
+            this.coll = this.db.collection('sessions')
+
+            let exist = await this.coll.indexExists(["access__idx"]);
+            if (!exist) {
+                this.coll.createIndex({"lastAccess": 1}, {name: "access__idx", expireAfterSeconds: maxAge});
+            }
         } catch (e) {
             log(e.message);
         }
@@ -34,10 +36,12 @@ class MongoStore{
         // console.log(arguments,'set')
         try {
             await this.coll.updateOne({"sid": key}, {
-                "sid": key,
-                "session": sess,
-                "lastAccess": new Date(),
-                // "maxAge": maxAge,
+                $set:{
+                    "sid": key,
+                    "session": sess,
+                    "lastAccess": new Date(),
+                    // "maxAge": maxAge,
+                }
             }, {upsert: true});
         } catch (e) {
             log(e.message);

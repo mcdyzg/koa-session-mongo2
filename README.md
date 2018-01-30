@@ -18,6 +18,8 @@ app.use(session({
     store: new MongoStore({
         url: DB_URL,
         collection: 'sessions',
+        // 这里设置的是数据库session定期清除的时间，与cookie的过期时间应保持一致，cookie由浏览器负责定时清除，需要注意的是索引一旦建立修改的时候需要删除旧的索引。此处的时间是秒为单位，cookie的maxAge是毫秒为单位
+        maxAge: 24 * 60 * 60
     }),
     signed:false,
     maxAge: 24 * 60 * 60 * 1000
@@ -29,4 +31,5 @@ app.listen(8080);
 ## Options
 
 - `url`:  required, db url   
-- `collection`: optional, db session collection name,default  "__session"
+- `collection`: optional, db session collection name,default  `__session`
+- `maxAge`:  expireAfterSeconds,mongodb will delete the document after maxAge. default `10*24*3600` ten days.
