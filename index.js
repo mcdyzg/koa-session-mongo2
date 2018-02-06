@@ -7,15 +7,17 @@ class MongoStore{
         this.init(opts);
     }
 
-    async init({url, options, collection = "__session",maxAge = 10 * 24 * 3600}) {
+    async init({url, db = "sessions", options, collection = "__session",maxAge = 10 * 24 * 3600}) {
         try {
             this.client = await mongod.MongoClient.connect(url);
-            this.db = await this.client.db('fenxiao_user');
-            this.coll = this.db.collection('sessions')
-
-            let exist = await this.coll.indexExists(["access__idx"]);
-            if (!exist) {
-                this.coll.createIndex({"lastAccess": 1}, {name: "access__idx", expireAfterSeconds: maxAge});
+            this.db = await this.client.db(db);
+            this.coll = await this.db.collection(collection)
+            try {
+                // 查看是否创建过索引
+                await this.coll.indexExists(["access__idx"]);
+            } catch (e) {
+                // 如果没有创建新的索引
+                await this.coll.createIndex({"lastAccess": 1}, {name: "access__idx", expireAfterSeconds: maxAge});
             }
         } catch (e) {
             log(e.message);
